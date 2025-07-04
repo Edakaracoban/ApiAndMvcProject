@@ -1,0 +1,59 @@
+﻿@model hotelmvc.Models.RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+     data-sidebar-position="fixed" data-header-position="fixed">
+    <div class="position-relative overflow-hidden text-bg-light min-vh-100 d-flex align-items-center justify-content-center">
+        <div class="d-flex align-items-center justify-content-center w-100">
+            <div class="row justify-content-center w-100">
+                <!-- Daha geniş sütunlar -->
+                <div class="col-md-10 col-lg-8 col-xxl-6">
+                    <div class="card mb-0">
+                        <div class="card-body p-5">
+                            <a href="~/" class="text-nowrap logo-img text-center d-block py-3 w-100">
+                                <img src="~/assets/images/logos/logo.svg" alt="Logo" />
+                            </a>
+                            <p class="text-center fs-4 mb-4">Your Social Banks</p>
+
+                            <form asp-action="Register" method="post">
+                                <div class="mb-4">
+                                    <label asp-for="Username" class="form-label fs-5"></label>
+                                    <input asp-for="Username" class="form-control form-control-lg" />
+                                    <span asp-validation-for="Username" class="text-danger"></span>
+                                </div>
+                                <div class="mb-4">
+                                    <label asp-for="Email" class="form-label fs-5"></label>
+                                    <input asp-for="Email" type="email" class="form-control form-control-lg" />
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                                <div class="mb-4">
+                                    <label asp-for="Password" class="form-label fs-5"></label>
+                                    <input asp-for="Password" type="password" class="form-control form-control-lg" />
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                </div>
+                                <div class="mb-4">
+                                    <label asp-for="ConfirmPassword" class="form-label fs-5"></label>
+                                    <input asp-for="ConfirmPassword" type="password" class="form-control form-control-lg" />
+                                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary w-100 py-3 fs-4 rounded-2">Sign Up</button>
+
+                                <div class="d-flex align-items-center justify-content-center mt-5">
+                                    <p class="fs-5 mb-0 fw-bold">Already have an Account?</p>
+                                    <a class="text-primary fw-bold ms-2" href="~/Account/Login">Sign In</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

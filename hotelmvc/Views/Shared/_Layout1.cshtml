@@ -1,0 +1,234 @@
+﻿<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"]</title>
+    <link rel="shortcut icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/833/833524.png" />
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive@3.2.12/dist/jquery.validate.unobtrusive.min.js"></script>
+
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            background-color: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: #343a40;
+            color: white;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            padding-top: 1rem;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            transition: transform 0.3s ease-in-out;
+            z-index: 1040;
+            border: none !important;
+            box-shadow: none !important;
+        }
+
+        .card {
+            transition: transform 0.2s ease;
+        }
+
+            .card:hover {
+                transform: translateY(-4px);
+            }
+
+        .sidebar h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            padding: 0 20px 1rem 20px;
+            border-bottom: 1px solid #495057;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+
+        .sidebar .nav-link {
+            color: #adb5bd;
+            padding: 12px 20px;
+            font-weight: 500;
+            border-left: 4px solid transparent;
+            transition: background-color 0.3s, border-left-color 0.3s;
+            margin-bottom: 0.3rem;
+        }
+
+            .sidebar .nav-link:hover,
+            .sidebar .nav-link.active {
+                background-color: #495057;
+                border-left-color: #0d6efd;
+                color: white;
+            }
+
+            .sidebar .nav-link.text-danger {
+                color: #ff6b6b;
+            }
+
+                .sidebar .nav-link.text-danger:hover {
+                    background-color: #ff4c4c;
+                    color: white;
+                    border-left-color: #ff6b6b;
+                }
+
+        .content {
+            margin-left: 250px;
+            padding: 2rem;
+            padding-bottom: 150px;
+            width: calc(100% - 250px);
+            flex: 1 0 auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            margin-top: 20px;
+        }
+
+        .table-background {
+            background-color: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        .container.table-background {
+            flex-grow: 1;
+            min-width: 100%;
+        }
+
+        footer.footer {
+            height: 150px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.875rem;
+            background-color:lightgrey;
+            z-index: 1030;
+            display: flex;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 40px;
+        }
+
+        button#menuToggle:focus, button#menuToggle:active {
+            outline: none;
+            box-shadow: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="sidebar" id="sidebar">
+        <a href="~/Home/Index" class="text-nowrap logo-img text-center d-block py-3 w-100">
+            <img src="~/assets/images/logos/logo.svg" alt="Logo" />
+        </a>
+        <a href="/Account/Index" class="nav-link">
+            <iconify-icon icon="mdi:account-circle-outline" style="vertical-align: middle; margin-right: 6px;"></iconify-icon>
+            Account
+        </a>
+        <a href="/Transaction/Index" class="nav-link">
+            <iconify-icon icon="mdi:swap-horizontal" style="vertical-align: middle; margin-right: 6px;"></iconify-icon>
+            Transaction
+        </a>
+        <a href="/Loan/Index" class="nav-link">
+            <iconify-icon icon="mdi:cash-multiple" style="vertical-align: middle; margin-right: 6px;"></iconify-icon>
+            Loan
+        </a>
+        <a href="/Employees/Index" class="nav-link">
+            <iconify-icon icon="mdi:account-group" style="vertical-align: middle; margin-right: 6px;"></iconify-icon>
+            Employees
+        </a>
+        <a href="/Customer/Index" class="nav-link">
+            <iconify-icon icon="mdi:account-box" style="vertical-align: middle; margin-right: 6px;"></iconify-icon>
+            Customer
+        </a>
+        <a href="/Branch/Index" class="nav-link">
+            <iconify-icon icon="mdi:office-building" style="vertical-align: middle; margin-right: 6px;"></iconify-icon>
+            Branch
+        </a>
+
+        <hr style="border-color: #495057; margin: 1rem 0;" />
+
+        <a href="/Account/Login" class="nav-link text-danger fw-bold">
+            <iconify-icon icon="mdi:logout" style="vertical-align: middle; margin-right: 6px;"></iconify-icon>
+            Çıkış Yap
+        </a>
+    </nav>
+
+    <div class="content">
+        <div class="container table-background">
+            @RenderBody()
+        </div>
+    </div>
+    <footer class="footer text-white">
+        <div class="container">
+            <div class="row align-items-center">
+
+                <div class="col-md-4 text-center text-md-start">
+                    <img src="~/assets/images/logos/logo.svg" alt="Banka Logo" style="height: 50px;" />
+                    <p class="mt-2 small mb-0">
+                        Güvenilir bankacılık hizmetlerimizle, müşterilerimizin finansal geleceğini koruyoruz.
+                    </p>
+                </div>
+
+                <div class="col-md-4 d-none d-md-block">
+                    <h6 class="text-uppercase mb-2">Hızlı Linkler</h6>
+                    <ul class="list-unstyled mb-0">
+                        <li><a href="/Account/Index" class="text-white text-decoration-none">Hesaplarım</a></li>
+                        <li><a href="/Transaction/Index" class="text-white text-decoration-none">İşlemler</a></li>
+                        <li><a href="/Loan/Index" class="text-white text-decoration-none">Krediler</a></li>
+                        <li><a href="/Customer/Index" class="text-white text-decoration-none">Müşteri Hizmetleri</a></li>
+                        <li><a href="/Branch/Index" class="text-white text-decoration-none">Şubeler</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-md-4 text-center text-md-end">
+                    <a href="https://facebook.com/bankafacebook" target="_blank" class="text-white me-3 fs-4" aria-label="Facebook">
+                        <iconify-icon icon="mdi:facebook"></iconify-icon>
+                    </a>
+                    <a href="https://twitter.com/bankatwitter" target="_blank" class="text-white me-3 fs-4" aria-label="Twitter">
+                        <iconify-icon icon="mdi:twitter"></iconify-icon>
+                    </a>
+                    <a href="https://instagram.com/bankainstagram" target="_blank" class="text-white me-3 fs-4" aria-label="Instagram">
+                        <iconify-icon icon="mdi:instagram"></iconify-icon>
+                    </a>
+                    <a href="https://linkedin.com/company/bankalinkedin" target="_blank" class="text-white fs-4" aria-label="LinkedIn">
+                        <iconify-icon icon="mdi:linkedin"></iconify-icon>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </footer>
+
+    @RenderSection("Scripts", required: false)
+    @RenderSection("Styles", required: false)
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+</body>
+
+</html>

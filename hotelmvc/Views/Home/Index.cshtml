@@ -1,0 +1,177 @@
+﻿@model hotelmvc.Models.HomeIndexViewModel
+@{
+    ViewData["Title"] = "Bank Dashboard";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+<h1 class="mb-4 text-primary fw-bold">Welcome! Flexy Bank Admin</h1>
+
+<div class="row g-4 mb-4">
+    <!-- Genel İstatistik Kartları -->
+    <div class="col-12 col-sm-6 col-md-3">
+        <div class="card transparent-grey p-3 shadow-sm text-center">
+            <h5 class="text-secondary">Total Accounts</h5>
+            <p class="display-4 fw-bold text-primary">@Model.TotalAccounts</p>
+            <p class="text-muted">Active accounts</p>
+        </div>
+    </div>
+
+    <div class="col-12 col-sm-6 col-md-3">
+        <div class="card transparent-grey p-3 shadow-sm text-center">
+            <h5 class="text-secondary">Total Customers</h5>
+            <p class="display-4 fw-bold text-primary">@Model.TotalCustomers</p>
+            <p class="text-muted">Registered customers</p>
+        </div>
+    </div>
+
+    <div class="col-12 col-sm-6 col-md-3">
+        <div class="card transparent-grey p-3 shadow-sm text-center">
+            <h5 class="text-secondary">Total Balance</h5>
+            <p class="display-4 fw-bold text-primary">₺@Model.TotalBalance</p>
+            <p class="text-muted">Combined balance</p>
+        </div>
+    </div>
+
+    <div class="col-12 col-sm-6 col-md-3">
+        <div class="card transparent-grey p-3 shadow-sm text-center">
+            <h5 class="text-secondary">Active Loans</h5>
+            <p class="display-4 fw-bold text-primary">@Model.ActiveLoans</p>
+            <p class="text-muted">Currently approved</p>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <!-- Kredi Durumu Kartları -->
+    <div class="col-12 col-md-4">
+        <div class="card transparent-grey shadow-sm p-3">
+            <h5 class="text-secondary mb-3">Loan Status</h5>
+            <ul class="list-group">
+                @* LoanStatus bilgisi modelde yoksa statik gösterim kalabilir ya da backend'den eklenebilir *@
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Approved
+                    <span class="badge bg-success rounded-pill">@Model.ApprovedLoanCount</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Pending
+                    <span class="badge bg-warning text-dark rounded-pill">@Model.PendingLoanCount</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Rejected
+                    <span class="badge bg-danger rounded-pill">@Model.RejectedLoanCount</span>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+
+    <!-- Son İşlemler Kartı -->
+    <div class="col-12 col-md-8">
+        <div class="card transparent-grey shadow-sm p-3">
+            <h5 class="text-secondary mb-3">Recent Transactions</h5>
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Transaction ID</th>
+                        <th>Account No</th>
+                        <th>Type</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var txn in Model.RecentTransactions)
+                    {
+                        var isPositive = txn.Amount >= 0;
+                        <tr>
+                            <td>@txn.TransactionId</td>
+                            <td>@txn.Account?.AccountNumber</td>
+                            <td>@txn.TransactionType</td>
+                            <td class="@(isPositive ? "text-success" : "text-danger")">
+                                @(isPositive ? "+" : "-")₺@Math.Abs(txn.Amount)
+                            </td>
+                            <td>@txn.Date.ToString("yyyy-MM-dd")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <!-- En Çok Bakiyeye Sahip Müşteriler -->
+    <div class="col-12 col-lg-6">
+        <div class="card transparent-grey shadow-sm p-3">
+            <h5 class="text-secondary mb-3">Top Customers by Balance</h5>
+            <ul class="list-group">
+                @foreach (var cust in Model.TopCustomers)
+                {
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        @cust.Name
+                   
+                        <span class="fw-bold">Top Customer</span>
+                    </li>
+                }
+
+            </ul>
+        </div>
+    </div>
+
+    <!-- Son Açılan Hesaplar -->
+    <div class="col-12 col-lg-6">
+        <div class="card transparent-grey shadow-sm p-3">
+            <h5 class="text-secondary mb-3">Recently Opened Accounts</h5>
+            <ul class="list-group">
+                @foreach (var acc in Model.RecentTransactions)
+                {
+                    <li class="list-group-item">
+                        Account No: @acc.AccountId - Owner: @acc.Amount - Date: @acc.Date
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <!-- Gelir-Gider Kartı -->
+    <div class="col-12">
+        <div class="card transparent-grey shadow-sm p-4 d-flex justify-content-center align-items-center">
+            <h5 class="text-secondary mb-3">Monthly Revenue vs Expense</h5>
+            <div class="d-flex gap-5 justify-content-center">
+                <div class="text-center">
+                    <iconify-icon icon="mdi:currency-usd" width="48" height="48" style="color:green;"></iconify-icon>
+                    <h3 class="mt-2 text-success">₺@Model.MonthlyRevenue</h3>
+                    <p class="text-muted">Revenue</p>
+                </div>
+                <div class="text-center">
+                    <iconify-icon icon="mdi:cash-minus" width="48" height="48" style="color:red;"></iconify-icon>
+                    <h3 class="mt-2 text-danger">₺@Model.MonthlyExpense</h3>
+                    <p class="text-muted">Expenses</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .transparent-grey {
+            background-color: rgba(233, 236, 239, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid #dee2e6;
+            border-radius: 12px;
+            transition: transform 0.2s ease;
+        }
+
+            .transparent-grey:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            }
+
+        table.table > tbody > tr > td {
+            vertical-align: middle;
+        }
+    </style>
+}

@@ -1,0 +1,73 @@
+﻿@model hotelmvc.Models.CustomerAccountSummaryViewModel
+
+@{
+    ViewData["Title"] = "Customer Account Summary";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+
+    string iban = $"TR{Model.CustomerName.GetHashCode().ToString().PadLeft(2, '0')}0001000200030004";
+    string qrUrl = $"https://api.qrserver.com/v1/create-qr-code/?size=100x100&data={Model.CustomerName}";
+}
+
+<div class="d-flex justify-content-center align-items-center" style="min-height: 85vh;">
+    <div class="card shadow-lg border-0"
+         style="width: 500px; border-radius: 20px; background-color: #6c757d; backdrop-filter: blur(16px); color: white; position: relative; box-shadow: 0 8px 32px rgba(0,0,0,0.3);">
+
+        <div class="card-body p-4">
+
+            <!-- Başlık ve Dropdown -->
+            <div class="d-flex justify-content-between align-items-start mb-4">
+                <div>
+                    <h4 class="fw-bold mb-1">Customer Account Summary</h4>
+                    <small class="text-white-50">Most Active Customer</small>
+                </div>
+
+                <!-- Raporlar Dropdown -->
+                <div class="dropdown">
+                    <button class="btn btn-outline-light btn-sm dropdown-toggle" type="button" id="reportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        Reports
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="reportDropdown">
+                        <li><a class="dropdown-item" asp-action="AccountSummary">Descending Account Count by Customer</a></li>
+                        <li><a class="dropdown-item" asp-action="CustomerWithMinAccounts">Customer with Lowest Account Count</a></li>
+                        <li><a class="dropdown-item" asp-action="CustomerWithMaxAccounts">Customer with Highest Account Count</a></li>
+                        <li>
+                            <a class="dropdown-item" asp-action="GetAccountsWithCustomerDetails">Accounts with Customer</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Profil Görseli -->
+            <div class="d-flex align-items-center mb-3">
+                <img src="https://ui-avatars.com/api/?name=@Model.CustomerName&background=ffffff&color=4e54c8&size=64"
+                     class="rounded-circle border border-white shadow me-3" style="width: 56px;" alt="Customer Avatar" />
+                <div>
+                    <p class="mb-1"><strong>Customer:</strong> @Model.CustomerName</p>
+                    <p class="mb-1"><strong>IBAN:</strong> <span style="letter-spacing: 1px;">@iban</span></p>
+                </div>
+            </div>
+
+            <!-- Müşteri Verileri -->
+            <p class="mb-2"><strong>Account Count:</strong> @Model.AccountCount</p>
+            <p class="mb-4"><strong>Total Balance:</strong> @String.Format(new System.Globalization.CultureInfo("tr-TR"), "{0:C}", Model.TotalBalance)</p>
+
+            <!-- Alt: QR ve Geri Butonu -->
+            <div class="d-flex justify-content-between align-items-center">
+                <img src="@qrUrl" alt="QR Code" class="border border-white rounded" style="width: 72px;" />
+
+                <a asp-action="Index" class="btn btn-outline-light btn-sm" title="Back">
+                    <iconify-icon icon="mdi:arrow-left" style="font-size: 18px;"></iconify-icon> Back
+                </a>
+            </div>
+        </div>
+
+        <!-- Çip simgesi -->
+        <div style="position: absolute; bottom: 16px; left: 20px;">
+            <img src="https://img.icons8.com/ios-filled/50/ffffff/sim-card-chip.png" alt="chip" style="width: 44px; opacity: 0.5;" />
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

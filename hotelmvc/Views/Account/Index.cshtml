@@ -1,0 +1,126 @@
+﻿@model List<hotelmvc.Models.AccountModel>
+
+@{
+    ViewData["Title"] = "Hesap Listesi";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+<h2 class="mb-4 fw-bold text-secondary">Account List</h2>
+
+<!-- Arama Formu -->
+<form method="get" asp-action="Index" class="row g-3 align-items-center mb-4">
+    <div class="col-auto">
+        <label for="accountNumber" class="col-form-label fw-semibold text-secondary">Account Number :</label>
+    </div>
+    <div class="col-auto">
+        <input type="text" id="accountNumber" name="accountNumber"
+               class="form-control form-control-sm transparent-grey"
+               value="@ViewData["AccountNumber"]" />
+    </div>
+    <div class="col-auto">
+        <label for="customerName" class="col-form-label fw-semibold text-secondary">Customer Name :</label>
+    </div>
+    <div class="col-auto">
+        <input type="text" id="customerName" name="customerName"
+               class="form-control form-control-sm transparent-grey"
+               value="@ViewData["CustomerName"]" />
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-outline-primary btn-sm">Search</button>
+    </div>
+    <div class="col-auto">
+        <a asp-action="Create" class="btn btn-outline-success btn-sm">New Account</a>
+    </div>
+    <div class="col-auto dropdown">
+        <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="reportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            Raporlar
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="reportDropdown">
+            <li><a class="dropdown-item" asp-action="AccountSummary">Descending account count by customer name</a></li>
+            <li>
+                <a class="dropdown-item" asp-action="CustomerWithMinAccounts">Customer with the lowest balance</a>
+            </li>
+            <li>
+                <a class="dropdown-item" asp-action="CustomerWithMaxAccounts">Customer with the highest balance</a>
+            </li>
+            <li>
+                <a class="dropdown-item" asp-action="GetAccountsWithCustomerDetails">Accounts with Customer</a>
+            </li>
+        </ul>
+    </div>
+
+</form>
+
+<!-- Hesap Kartları -->
+@if (Model?.Any() == true)
+{
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+        @foreach (var item in Model)
+        {
+            <div class="col">
+                <div class="card h-100 shadow-sm border-0 transparent-grey">
+                    <div class="card-body d-flex flex-column justify-content-between">
+                        <div>
+                            <h5 class="card-title fw-bold text-primary">Hesap No: @item.AccountNumber</h5>
+                            <p class="card-text mb-1"><strong>Müşteri:</strong> @item.Customer?.Name</p>
+                            <p class="card-text">
+                                <strong>Bakiye:</strong>
+                                @String.Format(new System.Globalization.CultureInfo("tr-TR"), "{0:C}", item.Balance)
+                            </p>
+                        </div>
+                        <div class="mt-3">
+                            <a asp-action="Details" asp-route-id="@item.AccountId" class="btn btn-outline-info btn-sm me-1">
+                                <iconify-icon icon="mdi:information-outline" style="font-size: 20px;"></iconify-icon>
+                            </a>
+                            <a asp-action="Edit" asp-route-id="@item.AccountId" class="btn btn-outline-warning btn-sm me-1">
+                                <iconify-icon icon="mdi:pencil-outline" style="font-size: 20px;"></iconify-icon>
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@item.AccountId" class="btn btn-outline-danger btn-sm"
+                               onclick="return confirm('Bu hesabı silmek istediğinize emin misiniz?');">
+                                <iconify-icon icon="mdi:delete-outline" style="font-size: 20px;"></iconify-icon>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p class="alert alert-secondary transparent-grey text-dark">
+        Kayıt bulunamadı.
+    </p>
+}
+
+@section Styles {
+    <style>
+        /* Ortak gri + blur stil */
+        .transparent-grey {
+            background-color: rgba(233, 236, 239, 0.6); /* Açık gri */
+            backdrop-filter: blur(10px);
+            border: 1px solid #dee2e6;
+            border-radius: 12px;
+        }
+
+        .card {
+            transition: transform 0.2s ease;
+        }
+
+            .card:hover {
+                transform: translateY(-4px);
+            }
+
+        .alert {
+            border-radius: 12px;
+            border: 1px solid rgba(222, 226, 230, 0.6);
+            padding: 1rem 1.25rem;
+        }
+    </style>
+}
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
