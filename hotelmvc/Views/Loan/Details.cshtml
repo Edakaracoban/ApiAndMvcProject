@@ -1,0 +1,45 @@
+﻿@model hotelmvc.Models.LoanModel
+
+@{
+    ViewData["Title"] = "Loan Details";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+
+    string avatarUrl = $"https://ui-avatars.com/api/?name={Uri.EscapeDataString(Model.Customer?.Name ?? "User")}&background=ffffff&color=4e54c8&size=64";
+}
+
+<div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="card shadow-lg border-0"
+         style="width: 600px; border-radius: 20px; background-color: #6c757d; backdrop-filter: blur(16px); color: white; position: relative; box-shadow: 0 8px 32px rgba(0,0,0,0.3);">
+        <div class="card-body p-4">
+
+            <!-- Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h4 class="fw-bold mb-1">Loan Information</h4>
+                    <small class="text-white-50">Detailed view of selected loan</small>
+                </div>
+                <img src="@avatarUrl"
+                     class="rounded-circle border border-white shadow" style="width: 56px;" alt="Customer Avatar" />
+            </div>
+
+            <!-- Loan Info -->
+            <p class="mb-2"><strong>Loan ID:</strong> @Model.LoanId</p>
+            <p class="mb-2"><strong>Customer:</strong> @Model.Customer?.Name</p>
+            <p class="mb-2"><strong>Loan Amount:</strong> @Model.LoanAmount.ToString("C")</p>
+            <p class="mb-2"><strong>Status:</strong> @Model.Status</p>
+            <p class="mb-2"><strong>Start Date:</strong> @Model.StartDate.ToString("yyyy-MM-dd")</p>
+            <p class="mb-4"><strong>End Date:</strong> @(Model.EndDate.ToString("yyyy-MM-dd") ?? "-")</p>
+
+            <!-- Back button -->
+            <a asp-action="Index" class="btn btn-outline-light btn-sm mt-3" title="Back to List">
+                <iconify-icon icon="mdi:arrow-left" style="font-size: 18px;"></iconify-icon>
+                Back
+            </a>
+        </div>
+
+        <!-- Chip Icon -->
+        <div style="position: absolute; bottom: 16px; left: 20px;">
+            <img src="https://img.icons8.com/ios-filled/50/ffffff/money.png" alt="chip" style="width: 44px; opacity: 0.5;" />
+        </div>
+    </div>
+</div>

@@ -1,0 +1,66 @@
+﻿@model hotelmvc.Models.LoanModel
+
+@{
+    ViewData["Title"] = "Edit Loan";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+<h2 class="mb-4 fw-bold text-secondary">Edit Loan</h2>
+
+<form asp-action="Edit" method="post" class="transparent-grey p-4 rounded shadow-sm">
+    <input type="hidden" asp-for="LoanId" />
+
+    <div class="mb-3">
+        <label asp-for="CustomerId" class="form-label fw-semibold text-secondary"></label>
+        <input asp-for="CustomerId" class="form-control" readonly />
+        <span asp-validation-for="CustomerId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="LoanAmount" class="form-label fw-semibold text-secondary"></label>
+        <input asp-for="LoanAmount" class="form-control" />
+        <span asp-validation-for="LoanAmount" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="StartDate" class="form-label fw-semibold text-secondary"></label>
+        <input asp-for="StartDate" class="form-control" type="date" />
+        <span asp-validation-for="StartDate" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="EndDate" class="form-label fw-semibold text-secondary"></label>
+        <input asp-for="EndDate" class="form-control" type="date" />
+        <span asp-validation-for="EndDate" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Status" class="form-label fw-semibold text-secondary"></label>
+        <select asp-for="Status" class="form-select">
+            <option value="Pending">Pending</option>
+            <option value="Approved">Approved</option>
+            <option value="Rejected">Rejected</option>
+            <option value="Paid">Paid</option>
+        </select>
+        <span asp-validation-for="Status" class="text-danger"></span>
+    </div>
+
+    <div class="d-flex justify-content-between">
+        <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+        <button type="submit" class="btn btn-primary">Update</button>
+    </div>
+</form>
+
+@section Styles {
+    <style>
+        .transparent-grey {
+            background-color: rgba(233, 236, 239, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid #dee2e6;
+        }
+    </style>
+}
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

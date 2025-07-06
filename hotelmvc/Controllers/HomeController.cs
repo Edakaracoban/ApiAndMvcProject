@@ -53,7 +53,7 @@ namespace hotelmvc.Controllers
             // Müşteri bilgilerini hesaplara eşle
             foreach (var account in accounts)
             {
-                account.Customer = customers.FirstOrDefault(c => c.Id == account.CustomerId);
+                account.Customer = customers.FirstOrDefault(c => c.CustomerId == account.CustomerId);
             }
 
             // Genel bilgiler
@@ -66,6 +66,7 @@ namespace hotelmvc.Controllers
             var approvedLoans = loans.Count(l => l.Status == "Approved");
             var pendingLoans = loans.Count(l => l.Status == "Pending");
             var rejectedLoans = loans.Count(l => l.Status == "Rejected");
+            var paidLoans = loans.Count(l => l.Status == "Paid");
 
             // Diğer bilgiler
             var recentTransactions = transactions.OrderByDescending(t => t.Date).Take(5);
@@ -87,7 +88,8 @@ namespace hotelmvc.Controllers
                 MonthlyExpense = 0,
                 ApprovedLoanCount = approvedLoans,
                 PendingLoanCount = pendingLoans,
-                RejectedLoanCount = rejectedLoans
+                RejectedLoanCount = rejectedLoans,
+                PaidLoanAccount=paidLoans
             };
 
             return View(model);

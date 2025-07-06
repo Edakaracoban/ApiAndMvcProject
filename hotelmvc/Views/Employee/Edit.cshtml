@@ -1,0 +1,51 @@
+﻿@model hotelmvc.Models.Employee
+
+@{
+    ViewData["Title"] = "Edit Employee";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+<h2 class="mb-4 fw-bold text-secondary">Edit Employee</h2>
+
+<form asp-action="Edit" method="post" class="transparent-grey p-4 rounded shadow-sm">
+    <input type="hidden" asp-for="EmployeeId" />
+
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label fw-semibold text-secondary"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Position" class="form-label fw-semibold text-secondary"></label>
+        <input asp-for="Position" class="form-control" />
+        <span asp-validation-for="Position" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="BranchId" class="form-label fw-semibold text-secondary"></label>
+        <select asp-for="BranchId" class="form-select" asp-items="ViewBag.Branches">
+            <option value="">-- Select Branch --</option>
+        </select>
+        <span asp-validation-for="BranchId" class="text-danger"></span>
+    </div>
+
+    <div class="d-flex justify-content-between">
+        <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+        <button type="submit" class="btn btn-primary">Update</button>
+    </div>
+</form>
+
+@section Styles {
+    <style>
+        .transparent-grey {
+            background-color: rgba(233, 236, 239, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid #dee2e6;
+        }
+    </style>
+}
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

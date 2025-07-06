@@ -17,6 +17,7 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive@3.2.12/dist/jquery.validate.unobtrusive.min.js"></script>
 
     <style>
+    
         html, body {
             height: 100%;
             margin: 0;
@@ -30,6 +31,7 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            margin: 0;
         }
 
         .sidebar {
@@ -94,14 +96,11 @@
                 }
 
         .content {
+            flex-grow: 1;
             margin-left: 250px;
             padding: 2rem;
             padding-bottom: 150px;
             width: calc(100% - 250px);
-            flex: 1 0 auto;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
             margin-top: 20px;
         }
 
@@ -123,12 +122,13 @@
             height: 150px;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             font-size: 0.875rem;
-            background-color:lightgrey;
+            background-color: lightgrey;
             z-index: 1030;
             display: flex;
             align-items: center;
             color: rgba(255, 255, 255, 0.7);
-            margin-top: 40px;
+            flex-shrink: 0;
+            margin-top:20px;
         }
 
         button#menuToggle:focus, button#menuToggle:active {
@@ -146,27 +146,27 @@
         </a>
         <a href="/Account/Index" class="nav-link">
             <iconify-icon icon="mdi:account-circle-outline" style="vertical-align: middle; margin-right: 6px;"></iconify-icon>
-            Account
+            Accounts
         </a>
         <a href="/Transaction/Index" class="nav-link">
             <iconify-icon icon="mdi:swap-horizontal" style="vertical-align: middle; margin-right: 6px;"></iconify-icon>
-            Transaction
+            Transactions
         </a>
         <a href="/Loan/Index" class="nav-link">
             <iconify-icon icon="mdi:cash-multiple" style="vertical-align: middle; margin-right: 6px;"></iconify-icon>
-            Loan
+            Loans
         </a>
-        <a href="/Employees/Index" class="nav-link">
+        <a href="/Employee/Index" class="nav-link">
             <iconify-icon icon="mdi:account-group" style="vertical-align: middle; margin-right: 6px;"></iconify-icon>
             Employees
         </a>
         <a href="/Customer/Index" class="nav-link">
             <iconify-icon icon="mdi:account-box" style="vertical-align: middle; margin-right: 6px;"></iconify-icon>
-            Customer
+            Customers
         </a>
         <a href="/Branch/Index" class="nav-link">
             <iconify-icon icon="mdi:office-building" style="vertical-align: middle; margin-right: 6px;"></iconify-icon>
-            Branch
+            Branches
         </a>
 
         <hr style="border-color: #495057; margin: 1rem 0;" />

@@ -1,0 +1,59 @@
+﻿@model List<hotelmvc.Models.AddressGroupModel>
+
+@{
+    ViewData["Title"] = "Customers Grouped by Address";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+<h2 class="mb-4 fw-bold text-secondary">Customers Grouped by Address</h2>
+
+<form method="get" asp-action="Index" class="row g-3 align-items-center mb-4">
+    <div class="col-auto dropdown">
+        <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="reportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            Reports
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="reportDropdown">
+            <li><a class="dropdown-item" asp-action="GetAccountStatsByCustomer">Account Count & Balance Stats</a></li>
+            <li><a class="dropdown-item" asp-action="CustomerReport">Top Customers By Account</a></li>
+            <li><a class="dropdown-item" asp-action="CustomersByAddress">Customers Group By Address</a></li>
+            <li><a class="dropdown-item" asp-action="GetLoanCustomerDetails">Accounts with Loans</a></li>
+            <li><a class="dropdown-item" asp-action="SortedAsc">Customers A-Z</a></li>
+            <li>
+                <a class="dropdown-item" asp-controller="Account" asp-action="GetAccountsWithCustomerDetails">Accounts with Customers</a>
+            </li>
+        </ul>
+    </div>
+</form>
+
+<div class="container mt-5">
+    <div class="card shadow border-0">
+        <div class="card-body">
+            @if (Model != null && Model.Any())
+            {
+                <table class="table table-hover table-bordered align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th scope="col">Address</th>
+                            <th scope="col">Customer Count</th>
+                            <th scope="col">Total Balance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var group in Model)
+                        {
+                            <tr>
+                                <td>@group.Address</td>
+                                <td>@group.CustomerCount</td>
+                                <td>@group.TotalBalance.ToString("C")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div class="alert alert-info text-center">No data found for address grouping.</div>
+            }
+        </div>
+    </div>
+</div>

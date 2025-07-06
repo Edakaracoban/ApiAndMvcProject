@@ -1,0 +1,62 @@
+﻿@model List<hotelmvc.Models.LoanStatModel>
+
+@{
+    ViewData["Title"] = "Loan Statistics";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+@if (TempData["Error"] != null)
+{
+        <div class="alert alert-danger">
+        @TempData["Error"]
+        </div>
+}
+<h2 class="mb-4 fw-bold text-secondary">Loan Statistics</h2>
+<form method="get" asp-action="Index" class="row g-3 align-items-center mb-4">
+    <div class="col-auto">
+        <a asp-action="Index" class="btn btn-outline-success btn-sm">Loans</a>
+    </div>
+</form>
+@if (Model != null && Model.Any())
+{
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var stat in Model)
+        {
+                    <div class="col">
+                        <div class="card text-white bg-gradient shadow border-0" style="border-radius: 16px; background: linear-gradient(135deg, #4e54c8, #8f94fb);">
+                            <div class="card-body p-4">
+                                <h5 class="card-title fw-bold">@stat.Status</h5>
+                                <p class="card-text mb-2">
+                                    <strong>Total Loans:</strong> @stat.LoanCount
+                                </p>
+                                <p class="card-text">
+                                    <strong>Total Amount:</strong> @stat.TotalLoanAmount.ToString("C")
+                                </p>
+                            </div>
+                            <div class="card-footer text-end bg-transparent border-0">
+                                <iconify-icon icon="mdi:chart-box-outline" style="font-size: 24px; color: rgba(255,255,255,0.7);"></iconify-icon>
+                            </div>
+                        </div>
+                    </div>
+        }
+        </div>
+}
+else
+{
+        <p class="alert alert-secondary mt-4 transparent-grey text-dark">
+            No loan statistics found.
+        </p>
+}
+@section Styles {
+        <style>
+            .bg-gradient {
+                background: linear-gradient(135deg, #4e54c8, #8f94fb);
+            }
+            .transparent-grey {
+                background-color: rgba(233, 236, 239, 0.6);
+                backdrop-filter: blur(10px);
+                border: 1px solid #dee2e6;
+                border-radius: 12px;
+                padding: 1rem;
+            }
+        </style>
+}

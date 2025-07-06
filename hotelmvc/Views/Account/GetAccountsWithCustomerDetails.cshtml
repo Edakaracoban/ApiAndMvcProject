@@ -7,17 +7,23 @@
 
 <h2 class="mb-4 fw-bold text-secondary">Accounts with Customer Details</h2>
 
-<div class="col-auto dropdown mb-4">
-    <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="reportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-        Raporlar
-    </button>
-    <ul class="dropdown-menu" aria-labelledby="reportDropdown">
-        <li><a class="dropdown-item" asp-action="AccountSummary">Descending account count by customer name</a></li>
-        <li><a class="dropdown-item" asp-action="CustomerWithMinAccounts">Customer with the lowest balance</a></li>
-        <li><a class="dropdown-item" asp-action="CustomerWithMaxAccounts">Customer with the highest balance</a></li>
-        <li><a class="dropdown-item" asp-action="GetAccountsWithCustomer">Accounts with Customer</a></li>
-    </ul>
+<div class="d-flex align-items-center mb-4 gap-2">
+    <div class="dropdown">
+        <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="reportDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            Raporlar
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="reportDropdown">
+            <li><a class="dropdown-item" asp-action="AccountSummary">Descending account count by customer name</a></li>
+            <li><a class="dropdown-item" asp-action="CustomerWithMinAccounts">Customer with the lowest balance</a></li>
+            <li><a class="dropdown-item" asp-action="CustomerWithMaxAccounts">Customer with the highest balance</a></li>
+            <li><a class="dropdown-item" asp-action="GetAccountsWithCustomer">Accounts with Customer</a></li>
+        </ul>
+    </div>
+
+    <a asp-controller="Account" asp-action="Index" class="btn btn-outline-primary btn-sm">Go to Accounts</a>
+    <a asp-controller="Customer" asp-action="Index" class="btn btn-outline-primary btn-sm">Go to Customers</a>
 </div>
+
 
 @if (Model?.Any() == true)
 {

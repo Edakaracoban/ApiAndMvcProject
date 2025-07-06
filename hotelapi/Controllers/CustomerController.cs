@@ -4,6 +4,8 @@ using hotelapi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using hotelmvc.Models;
+using CustomerReportModel = hotelmvc.Models.CustomerReportModel;
 
 namespace hotelapi.Controllers
 {
@@ -29,17 +31,18 @@ namespace hotelapi.Controllers
                 .ToListAsync();
         }
 
-        // GET: api/customer/GetCustomerById/5
-        [HttpGet]
-        [Route("GetCustomerById/{id}")]
-        public async Task<Customer> GetCustomerById(int id)
+        [HttpGet("GetCustomerById/{id}")]
+        public async Task<IActionResult> GetCustomerById(int id)
         {
-            return await context.Customers
-                .Include(c => c.Accounts)
-                .Include(c => c.Loans)
-                .FirstOrDefaultAsync(c => c.CustomerId == id);
-        }
+            var customer = await context.Customers
+                                         .Include(c => c.Accounts)  // Hesaplar dahil
+                                         .Include(c => c.Loans)     // Krediler dahil
+                                         .FirstOrDefaultAsync(c => c.CustomerId == id);
 
+            if (customer == null) return NotFound();
+
+            return Ok(customer);
+        }
         // POST: api/customer/AddCustomer
         [HttpPost]
         [Route("AddCustomer")]
@@ -80,11 +83,8 @@ namespace hotelapi.Controllers
             await context.SaveChangesAsync();
             return true;
         }
-
-        // Search: api/customer/Search?name=John&email=john@example.com
-        [HttpGet]
-        [Route("Search")]
-        public async Task<IEnumerable<Customer>> Search([FromQuery] string name, [FromQuery] string email)
+        [HttpGet("Search")]
+        public async Task<IEnumerable<Customer>> Search([FromQuery] string? name = null, [FromQuery] string? email = null)
         {
             var query = context.Customers
                 .Include(c => c.Accounts)
@@ -145,26 +145,67 @@ namespace hotelapi.Controllers
 
             return await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
         }
-
-        // GET: api/customer/GetTopCustomersReport //en çok hesaba sahip ilk 5 müşteri raporu
-        [HttpGet]
-        [Route("GetTopCustomersReport")]
-        public async Task<ActionResult<IEnumerable<CustomerReportModel>>> GetTopCustomersReport()
+        [HttpGet("GetTopCustomersReport")]
+        public async Task<IEnumerable<object>> GetTopCustomersReport()
         {
-            var result = await context.Accounts
+            var topCustomers = await context.Accounts
                 .Include(a => a.Customer)
-                .GroupBy(a => a.Customer.Name)
-                .Select(g => new CustomerReportModel
+                .GroupBy(a => new { a.Customer.CustomerId, a.Customer.Name })
+                .Select(g => new
                 {
-                    CustomerName = g.Key,
+                    CustomerId = g.Key.CustomerId,
+                    CustomerName = g.Key.Name,
                     AccountCount = g.Count(),
                     TotalBalance = g.Sum(a => a.Balance)
                 })
-                .OrderByDescending(r => r.AccountCount)
+                .OrderByDescending(g => g.AccountCount)
                 .Take(5)
                 .ToListAsync();
 
-            return Ok(result);
+            return topCustomers;
+        }
+        [HttpGet("GetCustomersByAddress")]
+        public async Task<IEnumerable<Models.AddressGroupModel>> GetCustomersByAddress()
+        {
+            var result = await context.Customers
+                .Include(c => c.Accounts)
+                .GroupBy(c => c.Address)
+                .Select(g => new Models.AddressGroupModel
+                {
+                    Address = g.Key,
+                    CustomerCount = g.Count(),
+                    TotalBalance = g.Sum(c => c.Accounts.Sum(a => a.Balance))
+                })
+                .ToListAsync();
+
+            return result;
+        }
+        [HttpGet("GetLoanCustomerDetails")]
+        public async Task<IEnumerable<object>> GetLoanCustomerDetails()
+        {
+            var result = await context.Loans
+                .Include(l => l.Customer)
+                .Select(l => new
+                {
+                    LoanId = l.LoanId,
+                    LoanAmount = l.LoanAmount,
+                    Status = l.Status,
+                    CustomerId = l.Customer.CustomerId,
+                    CustomerName = l.Customer.Name,
+                    CustomerEmail = l.Customer.Email
+                })
+                .ToListAsync();
+
+            return result;
+        }
+        [HttpGet("GetCustomersSortedAsc")]
+        public async Task<IEnumerable<Customer>> GetCustomersSortedAsc()
+        {
+            return await context.Customers
+                .Include(c => c.Accounts)
+                .Include(c => c.Loans)
+                .OrderBy(c => c.Name)
+                .ToListAsync();
         }
 
     }

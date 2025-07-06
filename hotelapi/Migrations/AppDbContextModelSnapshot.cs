@@ -176,27 +176,6 @@ namespace hotelapi.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("hotelapi.Models.UserModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UserModels");
-                });
-
             modelBuilder.Entity("hotelapi.Models.Account", b =>
                 {
                     b.HasOne("hotelapi.Models.Customer", "Customer")

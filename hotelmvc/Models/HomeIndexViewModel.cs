@@ -20,6 +20,7 @@ namespace hotelmvc.Models
         //public double UsdToTry { get; set; }
         //public double EurToTry { get; set; }
 
+        public int PaidLoanAccount { get; set; }
         public int ApprovedLoanCount { get; set; }
         public int PendingLoanCount { get; set; }
         public int RejectedLoanCount { get; set; }

@@ -19,16 +19,24 @@ namespace hotelapi.Controllers
             this.context = context;
         }
 
-        // GET: api/transaction/GetTransactions
+        // GET: api/transaction/GetTransactions?transactionType=Deposit
         [HttpGet]
         [Route("GetTransactions")]
-        public async Task<IEnumerable<Transaction>> GetTransactions()
+        public async Task<IEnumerable<Transaction>> GetTransactions([FromQuery] string? transactionType)
         {
-            return await context.Transactions
+            var query = context.Transactions
                 .Include(t => t.Account)
                 .ThenInclude(a => a.Customer)
-                .ToListAsync();
+                .AsQueryable();
+
+            if (!string.IsNullOrEmpty(transactionType))
+            {
+                query = query.Where(t => t.TransactionType.Contains(transactionType));
+            }
+
+            return await query.ToListAsync();
         }
+
 
         // GET: api/transaction/GetTransactionById/5
         [HttpGet]
@@ -63,6 +71,8 @@ namespace hotelapi.Controllers
             await context.SaveChangesAsync();
             return transaction;
         }
+
+
 
         // DELETE: api/transaction/DeleteTransaction/5
         [HttpDelete]

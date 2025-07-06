@@ -1,0 +1,54 @@
+﻿@model List<hotelmvc.Models.LoanStatByMonthModel>
+
+@{
+    ViewData["Title"] = "Monthly Loan Statistics";
+    Layout = "~/Views/Shared/_Layout1.cshtml";
+}
+
+<h2 class="mb-4 fw-bold text-secondary">@ViewData["Title"]</h2>
+
+<form method="get" asp-action="Index" class="row g-3 align-items-center mb-4">
+    <div class="col-auto">
+        <a asp-action="Index" class="btn btn-outline-secondary btn-sm ms-1">Loans</a>
+    </div>
+</form>
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+@if (Model != null && Model.Any())
+{
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var stat in Model)
+        {
+            <div class="col">
+                <div class="card shadow border-0" style="border-radius: 16px; background-color:#6c757d; color: white;">
+                    <div class="card-body p-4">
+                        <h5 class="card-title fw-bold">@stat.Year - @System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(stat.Month)</h5>
+                        <p class="card-text mb-2"><strong>Loan Count:</strong> @stat.LoanCount</p>
+                        <p class="card-text"><strong>Total Amount:</strong> @stat.TotalLoanAmount.ToString("C")</p>
+                    </div>
+                    <div class="card-footer text-end bg-transparent border-0">
+                        <iconify-icon icon="mdi:calendar-month-outline" style="font-size: 24px; color: rgba(255,255,255,0.7);"></iconify-icon>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p class="alert alert-secondary mt-4">
+        No monthly loan statistics found.
+    </p>
+}
+
+@section Styles {
+    <style>
+        .bg-gradient {
+            background-color:#6c757d;
+        }
+    </style>
+}

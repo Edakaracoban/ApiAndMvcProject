@@ -60,6 +60,10 @@
                     Rejected
                     <span class="badge bg-danger rounded-pill">@Model.RejectedLoanCount</span>
                 </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    Paid
+                    <span class="badge bg-success rounded-pill">@Model.PaidLoanAccount</span>
+                </li>
 
             </ul>
         </div>
@@ -126,7 +130,7 @@
                 @foreach (var acc in Model.RecentTransactions)
                 {
                     <li class="list-group-item">
-                        Account No: @acc.AccountId - Owner: @acc.Amount - Date: @acc.Date
+                        Account Id: @acc.AccountId - Balance: @acc.Amount - Date: @acc.Date
                     </li>
                 }
             </ul>
